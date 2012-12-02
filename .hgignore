@@ -1,0 +1,11 @@
+syntax: glob
+*.crunchsolution.cache
+_Resharper.*/
+_ReSharper.SkypeRestartBot/*
+*/obj/*
+*/bin/*
+*.ncrunchsolution.*
+SkypeRestartBot.ncrunchsolution
+*.DotSettings.user
+*.suo
+*.ncrunchproject

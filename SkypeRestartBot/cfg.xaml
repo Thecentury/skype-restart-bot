@@ -1,0 +1,142 @@
+﻿<Config
+    xmlns="clr-namespace:SkypeRestartBot;assembly=SkypeRestartBot"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:s="clr-namespace:System;assembly=mscorlib">
+
+    <Config.UnknownServices>
+        <s:String>Я не знаю такой сервис.</s:String>
+        <s:String>{0}? Это кто?</s:String>
+        <s:String>{0} нет на моих картах</s:String>
+        <s:String>{0}? Не знаю такого!</s:String>
+        <s:String>{0}? Зачем вы меня путаете?! Такого не существует!</s:String>
+    </Config.UnknownServices>
+
+    <Config.CommandFactories>
+        <RestartServiceCommandFactory>
+            <RestartServiceCommandFactory.ActivatePatterns>
+                <s:String>Перезагрузите {0}</s:String>
+                <s:String>Перезапустите {0}</s:String>
+                <s:String>Грымбрымбрым {0}</s:String>
+                <s:String>Грымгрымбрым {0}</s:String>
+                <s:String>Грымгрымгрым {0}</s:String>
+                <s:String>Тыдыщ {0}</s:String>
+                <s:String>Пиу-пиу {0}</s:String>
+                <s:String>Убейте {0}, это приказ!</s:String>
+                <s:String>{0}\? Расстрелять!</s:String>
+                <s:String>Дорогой бот! Не мог бы ты перезапустить {0}\?</s:String>
+                <s:String>Дорогой бот! Не мог бы ты перезагрузить {0}\?</s:String>
+            </RestartServiceCommandFactory.ActivatePatterns>
+        </RestartServiceCommandFactory>
+
+        <ReplyCommandFactory>
+            <ReplyCommandFactory.ActivatePatterns>
+                <s:String>Спасибо</s:String>
+                <s:String>Bot, спасибо</s:String>
+            </ReplyCommandFactory.ActivatePatterns>
+            <ReplyCommandFactory.Answers>
+                <s:String>Пожалуйста!</s:String>
+                <s:String>Всегда рад помочь :)</s:String>
+                <s:String>Мне приятно тебе помогать ;)</s:String>
+                <s:String>Это было не сложно</s:String>
+            </ReplyCommandFactory.Answers>
+        </ReplyCommandFactory>
+    </Config.CommandFactories>
+    
+    <Config.Prefix>
+        <s:String xml:space="preserve">Bot: </s:String>
+    </Config.Prefix>
+
+    <Config.Senders>
+        <User Nick="mikhail.brinchuk1" Name="Михаил" Id="mb"/>
+        <UsersGroup Name="developers">
+            <x:Reference Name="mb"/>
+        </UsersGroup>
+        <UsersGroup Name="testers">
+        </UsersGroup>
+    </Config.Senders>
+
+    <Config.Targets>
+        <ServiceInfo x:Name="awad2" Server="srv-lord" ServiceName="Awad Front D"/>
+        <ServiceInfo x:Name="dev" Server="srv-lord" ServiceName="Awad Front DEV"/>
+        <ServiceInfo x:Name="jet" Server="srv-lord" ServiceName="Awad Front JET"/>
+        <ServiceInfo x:Name="jet2" Server="srv-lord" ServiceName="Awad Front JET2"/>
+        <ServiceInfo x:Name="tkp" Server="srv-lord" ServiceName="Awad Front TKP"/>
+
+        <Group x:Name="lord">
+            <x:Reference Name="awad2"/>
+            <x:Reference Name="jet"/>
+            <x:Reference Name="jet2"/>
+            <x:Reference Name="tkp"/>
+            <Group.AllowedFor>
+                <x:Reference Name="mb"/>
+            </Group.AllowedFor>
+        </Group>
+    </Config.Targets>
+
+    <Config.Aliases>
+        <ServiceAlias Alias="awad2" Service="awad2"/>
+        <ServiceAlias Alias="awad 2" Service="awad2"/>
+        <ServiceAlias Alias="авад2" Service="awad2"/>
+        <ServiceAlias Alias="авад 2" Service="awad2"/>
+
+        <ServiceAlias Alias="dev" Service="dev"/>
+        <ServiceAlias Alias="дев" Service="dev"/>
+
+        <ServiceAlias Alias="ткп" Service="tkp"/>
+        <ServiceAlias Alias="tkp" Service="tkp"/>
+
+        <ServiceAlias Alias="jet" Service="jet"/>
+        <ServiceAlias Alias="джет" Service="jet"/>
+
+        <ServiceAlias Alias="jet2" Service="jet2"/>
+        <ServiceAlias Alias="jet 2" Service="jet2"/>
+        <ServiceAlias Alias="джет2" Service="jet2"/>
+        <ServiceAlias Alias="джет 2" Service="jet2"/>
+
+        <ServiceAlias Alias="все на лорде" Service="lord"/>
+    </Config.Aliases>
+
+    <Config.SuccessfullPatterns>
+        <s:String>{0} ап</s:String>
+        <s:String>{0} поднялся \o/</s:String>
+        <s:String>{0} запущен</s:String>
+        <s:String>{0} поднят</s:String>
+        <s:String>{0} снова в строю</s:String>
+        <s:String>Рад сообщить, что {0} снова в строю</s:String>
+        <s:String>Рад сообщить, что {0} снова с нами</s:String>
+    </Config.SuccessfullPatterns>
+
+    <Config.FailedPatterns>
+        <s:String>{0} не поднялся</s:String>
+        <s:String>{0} не с нами</s:String>
+        <s:String>{0} скорее мертв</s:String>
+        <s:String>{0} поплохело</s:String>
+        <s:String>{0} улетел, но обещал вернуться...</s:String>
+    </Config.FailedPatterns>
+
+    <Config.OK>
+        <s:String>Перезапускаю {0}</s:String>
+        <s:String>Перезагружаю {0}</s:String>
+        <s:String>Рестарт {0}</s:String>
+    </Config.OK>
+
+    <Config.OKGirls>
+        <s:String>Когда я вижу, что вы набираете сообщение, мое цифровое сердце начинает биться чаще...</s:String>
+        <s:String>Для вас я готов на все!</s:String>
+        <s:String>Вы сегодня очаровательны... Так, о чем это я?</s:String>
+        <s:String>Румянец на ваших щеках вдохновляет меня работать и днем, и ночью :$</s:String>
+        <s:String>Заходите как-нибудь ко мне на чашечку чая, незабвенная! Ищите меня на диске C:</s:String>
+        <s:String>Слушаю вас, прекрасная незнакомка!</s:String>
+        <s:String>Этот (F) для вас!</s:String>
+    </Config.OKGirls>
+
+    <Config.GirlsNicks>
+        <s:String>gulnaz.almuhametova</s:String>
+        <s:String>bulanova_dasha</s:String>
+    </Config.GirlsNicks>
+
+    <Config.Forbidden>
+        <s:String>{0}, ты не можешь {1} {2}</s:String>
+        <s:String>{0}, у тебя нет прав {1} {2}</s:String>
+    </Config.Forbidden>
+</Config>
