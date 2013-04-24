@@ -7,28 +7,26 @@ using SKYPE4COMLib;
 
 namespace SkypeRestartBot
 {
-	public sealed class RestartServiceCommand : ICommand
+	public sealed class FakeRestartServiceCommand : ICommand
 	{
 		private readonly Config _config;
 		private readonly ChatMessage _message;
 		private readonly ISkypeMessenger _skype;
+		private readonly IServiceController _serviceController;
+
 		private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-		public RestartServiceCommand( ChatMessage message, Config config, ISkypeMessenger skype )
+		public FakeRestartServiceCommand( ChatMessage message, Config config, ISkypeMessenger skype, IServiceController serviceController )
 		{
 			_message = message;
 			_config = config;
 			_skype = skype;
+			_serviceController = serviceController;
 		}
 
 		public void Execute( ServiceInfo service, string alias )
 		{
 			Task.Factory.StartNew( () => RestartService( service, alias ) );
-		}
-
-		public string Verb
-		{
-			get { return "перезагружать"; }
 		}
 
 		private void RestartService( ServiceInfo service, string alias )
@@ -52,35 +50,7 @@ namespace SkypeRestartBot
 
 				try
 				{
-					var controller = new ServiceController( service.ServiceName, service.Server );
-
-					var status = controller.Status;
-
-					_logger.Info( "Service {0} is {1}", service, status );
-
-					if ( status == ServiceControllerStatus.Running )
-					{
-						controller.Stop();
-					}
-
-					if ( status == ServiceControllerStatus.Running || status == ServiceControllerStatus.StopPending )
-					{
-						controller.WaitForStatus( ServiceControllerStatus.Stopped, Constants.ServiceWaitDuration );
-					}
-
-					if ( status == ServiceControllerStatus.Running || status == ServiceControllerStatus.StopPending ||
-						 status == ServiceControllerStatus.Stopped )
-					{
-						controller.Start();
-					}
-					if ( status == ServiceControllerStatus.Running || status == ServiceControllerStatus.StopPending ||
-						 status == ServiceControllerStatus.Stopped || status == ServiceControllerStatus.StartPending )
-					{
-						controller.WaitForStatus( ServiceControllerStatus.Running, Constants.ServiceWaitDuration );
-					}
-
-					controller.Refresh();
-					status = controller.Status;
+					var status = _serviceController.Status;
 
 					if ( status == ServiceControllerStatus.Running )
 					{
@@ -95,7 +65,7 @@ namespace SkypeRestartBot
 				}
 				catch ( Exception exc )
 				{
-					_skype.Reply( _message, String.Format( "{0} не запустился", alias ) );
+					_skype.Reply( _message, "Что-то упало при работе с сервисом" );
 					_logger.Error( exc );
 				}
 			}
@@ -105,9 +75,9 @@ namespace SkypeRestartBot
 			}
 		}
 
-		public override string ToString()
+		public string Verb
 		{
-			return GetType().Name;
+			get { return "перезагружать"; }
 		}
 	}
 }

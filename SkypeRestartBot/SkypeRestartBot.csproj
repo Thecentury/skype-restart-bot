@@ -68,12 +68,19 @@
     <Compile Include="CommandTarget.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="ConfigReader.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="FakeRestartServiceCommand.cs" />
+    <Compile Include="FakeRestartServiceCommandFactory.cs" />
+    <Compile Include="FakeServiceController.cs" />
     <Compile Include="IBamboo.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="ICommandFactory.cs" />
     <Compile Include="ICommandTarget.cs" />
+    <Compile Include="IParameterlessCommand.cs" />
+    <Compile Include="IRandomNumberGenerator.cs" />
     <Compile Include="ISender.cs" />
+    <Compile Include="IServiceController.cs" />
     <Compile Include="ISkypeMessenger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs">
@@ -83,6 +90,7 @@
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomNumberGenerator.cs" />
     <Compile Include="RegexCommandFactory.cs" />
     <Compile Include="RestartServiceCommand.cs" />
     <Compile Include="RestartServiceCommandFactory.cs" />
@@ -99,6 +107,9 @@
     <Compile Include="SkypeRestartService.Designer.cs">
       <DependentUpon>SkypeRestartService.cs</DependentUpon>
     </Compile>
+    <Compile Include="StopServiceCommand.cs" />
+    <Compile Include="StopServiceCommandConfig.cs" />
+    <Compile Include="StopServiceCommandFactory.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UsersGroup.cs" />
     <Compile Include="ReplyCommand.cs" />
