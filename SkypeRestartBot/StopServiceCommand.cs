@@ -7,31 +7,38 @@ using SKYPE4COMLib;
 
 namespace SkypeRestartBot
 {
-	public sealed class RestartServiceCommand : ICommand
+	public sealed class StopServiceCommand : ICommand
 	{
 		private readonly Config _config;
 		private readonly ChatMessage _message;
 		private readonly ISkypeMessenger _skype;
 		private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+		private readonly StopServiceCommandConfig _commandConfig;
 
-		public RestartServiceCommand( ChatMessage message, Config config, ISkypeMessenger skype )
+		public StopServiceCommand( ChatMessage message, Config config, ISkypeMessenger skype, StopServiceCommandConfig commandConfig )
 		{
+			if ( commandConfig == null )
+			{
+				throw new ArgumentNullException( "commandConfig" );
+			}
+
 			_message = message;
 			_config = config;
 			_skype = skype;
+			_commandConfig = commandConfig;
 		}
 
 		public void Execute( ServiceInfo service, string alias )
 		{
-			Task.Factory.StartNew( () => RestartService( service, alias ) );
+			Task.Factory.StartNew( () => StopService( service, alias ) );
 		}
 
 		public string Verb
 		{
-			get { return "перезагружать"; }
+			get { return "останавливать"; }
 		}
 
-		private void RestartService( ServiceInfo service, string alias )
+		private void StopService( ServiceInfo service, string alias )
 		{
 			if ( !Monitor.TryEnter( service ) )
 			{
@@ -47,7 +54,7 @@ namespace SkypeRestartBot
 				}
 				else
 				{
-					_skype.Reply( _message, _config.OK, alias );
+					_skype.Reply( _message, _commandConfig.BeganToStop, alias );
 				}
 
 				try
@@ -68,34 +75,30 @@ namespace SkypeRestartBot
 						controller.WaitForStatus( ServiceControllerStatus.Stopped, Constants.ServiceWaitDuration );
 					}
 
-					if ( status == ServiceControllerStatus.Running || status == ServiceControllerStatus.StopPending ||
-						 status == ServiceControllerStatus.Stopped )
-					{
-						controller.Start();
-					}
-					if ( status == ServiceControllerStatus.Running || status == ServiceControllerStatus.StopPending ||
-						 status == ServiceControllerStatus.Stopped || status == ServiceControllerStatus.StartPending )
-					{
-						controller.WaitForStatus( ServiceControllerStatus.Running, Constants.ServiceWaitDuration );
-					}
-
 					controller.Refresh();
 					status = controller.Status;
 
-					if ( status == ServiceControllerStatus.Running )
+					if ( status == ServiceControllerStatus.Stopped )
 					{
-						_skype.Reply( _message, _config.SuccessfullPatterns, alias );
-						_logger.Info( "{0} is up", service );
+						_skype.Reply( _message, _commandConfig.StoppedPhrases, alias );
+						_logger.Info( "{0} is stopped", service );
 					}
 					else
 					{
-						_skype.Reply( _message, _config.FailedPatterns, alias );
-						_logger.Warn( "{0} is not up, {1}", service, status );
+						_skype.Reply( _message, _commandConfig.IsntStoppedPhrases, alias );
+						_logger.Warn( "{0} didn't stop, {1}", service, status );
 					}
+				}
+				catch (System.TimeoutException exc)
+				{
+					_skype.Reply( _message, _commandConfig.IsntStoppedPhrases, alias );
+
+					_logger.Error( exc );
 				}
 				catch ( Exception exc )
 				{
-					_skype.Reply( _message, String.Format( "{0} не запустился", alias ) );
+					_skype.Reply( _message, _commandConfig.IsntStoppedPhrases, alias );
+
 					_logger.Error( exc );
 				}
 			}
