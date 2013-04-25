@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using SkypeRestartBot.EugeneGoostman;
 
 namespace SkypeRestartBot.Tests
 {
 	[TestFixture]
-	public class YouAreWelcomeTests
+	public sealed class YouAreWelcomeTests
 	{
 		[TestCase( "Thank you" )]
 		[TestCase( "thank you" )]
@@ -22,6 +23,25 @@ namespace SkypeRestartBot.Tests
 			bool canHandle = factory.CanHandle( message, out alias );
 
 			Assert.That( canHandle, Is.True );
+		}
+	}
+
+	[TestFixture]
+	public sealed class EugeneGoostmanCommandFactoryTests
+	{
+		[TestCase( "abc", Result = true )]
+		[TestCase( "abc!", Result = true )]
+		[TestCase( "abc4567", Result = true )]
+		[TestCase( "абв", Result = false )]
+		public bool CanHandle( string message )
+		{
+			EugeneGoostmanCommandFactory factory = new EugeneGoostmanCommandFactory();
+			factory.EndInit();
+
+			string alias;
+			bool canHandle = factory.CanHandle( message, out alias );
+
+			return canHandle;
 		}
 	}
 }

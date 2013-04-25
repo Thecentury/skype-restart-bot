@@ -124,10 +124,14 @@ namespace SkypeRestartBot
 		{
 			var sender = message.Sender;
 			string userName = sender.Handle;
+
+			logger.Debug( "Received '{0}' from {1} in {2}", message.Body, userName, message.ChatName );
+
 			bool isMe = userName == "mikhail.brinchuk" && Status == TChatMessageStatus.cmsSent;
-			bool shouldHandleMessage = Status == TChatMessageStatus.cmsReceived || isMe;
+			bool shouldHandleMessage = Status == TChatMessageStatus.cmsReceived || Status == TChatMessageStatus.cmsRead || isMe;
 			if ( !shouldHandleMessage )
 			{
+				logger.Debug( "Decided not to handle this message, Status: {0}", Status );
 				return;
 			}
 
